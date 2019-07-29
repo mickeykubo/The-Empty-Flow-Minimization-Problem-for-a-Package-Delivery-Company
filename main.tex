@@ -1,0 +1,131 @@
+\documentclass[a4paper]{bxjsarticle}  
+\usepackage{zxjatype}
+\usepackage[ipa]{zxjafont}
+
+%\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+% \todo[inline, color=green!40]{sample for inline TODO's}
+% \todo{sample for margin TODO's}
+
+\title{The Empty Flow Minimization Problem for a Package Delivery Company}
+
+\author{Hideki Hashimoto and Jo\~{a}o Pedro Pedroso and Mikio Kubo}
+
+\date{February 2016	}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Your abstract.
+\end{abstract}
+
+\section{Introduction}
+
+\todo[inline, color=green!40]{Full-Truck Load Vehicle Routing Problem}
+
+問題は感じだね．
+
+\section{Problem Definition}
+
+A large package delivery company in Japan has to design a network composed of the set of centers and the set of bases.
+All the packages from customers are delivered to a center, moved to a base, ...
+
+
+$C$ : set of centers
+
+$B$ : set of bases 
+
+$V$ : set of vehicles
+
+$V_i$: set of vehicles whose home base is $i$
+
+$D_{ij}$ : demand  from base $i$ to base $j$ 
+
+$Q_v$: capacity of vehicle $v$ 
+
+$E_{ij}$ : cost of empty from from $i$ to $j$ 
+
+
+\section{Approximate Algorithm}
+
+
+In this section, we propose a quick approximate algorithm for the empty flow minimization problem. 
+
+In the network design problem in which we determine the assignment of each center to a base,
+we need to solve the empty flow minimization problem repeatedly. 
+So the algorithm proposed here is used to get a quick (approximate) solution. 
+\[\]
+If we assume  that the vehicles are homogeneous and have the same capacity $Q$, 
+the number of vehicles required from base $i$ to $j$ is computed in the following way:
+\[
+ R_{ij} = \lceil D_{ij}/Q \rceil . 
+\]
+
+Then we compute the surplus  (negative number means deficit) of vehicles for base $i$ as follows:
+\[
+ s_i =  \sum_{j} R_{ji}  -\sum_{j} R_{ij} 
+\]
+
+
+If we use an integer variable $X_{ij}$ that are moved from $i$ to $j$, 
+the problem is reduced to the following problem. 
+\[
+ \min \sum  E_{ij} X_{ij} 
+\]
+subject to 
+\[
+  \sum_{j}  y_{ij} = s_i \ \ \ \mbox{ for  all } i \in B
+\]
+
+The problem is a transportation problem that can be solved easily (without using integer variables). 
+
+
+\section{Column Generation Approach}
+
+Go-when-full policy:
+
+Since demands are uncertain and dynamic, the company applies the go-when-full policy 
+in which the vehicles waiting at the base go to their destination as soon as their capacity become full. 
+
+Priority assumptions:
+
+1. Owned vehicles have a priority to subcontracted vehicles.
+
+2. For the same types of vehicles, the larger vehicles have a priority to smaller vehicles. 
+
+There are two types of vehicles; one is the owned vehicles, and another is the subcontracted vehicles. 
+The owned vehicles have no fixed cost, the subcontracted vehicles require a fixed cost.
+
+
+Under the assumptions above, we can get the delivery schedule between two bases. 
+
+$M$ : set of all the movements of the vehicles (defined as the departure time of the origin base and the arrival time of the destination base)
+
+${\cal R}_{iv}$ : set of routes for vehicle $v$ whose home base is $i$.
+
+$a_{rm}$ : $=1$ if route $r$ covers movement movement $m$
+
+\[
+ \min \ \ \sum_{r} R_r x_r
+\]
+subject to 
+\[
+  \sum_{r \in {\cal R}_{iv} } x_r =1 \ \ \  \mbox{ for all } v,i
+\]
+
+\[
+ \sum_{r} a_{rm} x_r \leq 1 \ \ \  \mbox{ for all } m \in M
+\]
+
+
+
+
+
+\end{document}
